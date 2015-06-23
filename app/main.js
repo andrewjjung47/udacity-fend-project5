@@ -22,7 +22,9 @@ define(["jquery", "knockout"], function($, ko) {
     self.addPlace("Disneyland Park",
                   new google.maps.LatLng(33.812092,-117.918974));
 
-    //GOOGLEMAPS.createMarker(self.listOfPlaces()[0]);
+    self.toggleInfoWindow = function(marker) {
+      google.maps.event.trigger(marker, 'click');
+    };
   }
   ko.applyBindings(new viewModel(), $('html')[0]);
 });

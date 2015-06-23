@@ -29,7 +29,7 @@
       <div class="col-md-3">
         <input type="text" class="form-control" placeholder="Filter by...">
         <div class="list-group" data-bind="foreach: listOfPlaces">
-          <button type="button" class="list-group-item" data-bind="text: title"></button>
+          <button type="button" class="list-group-item" data-bind="text: title, click: $parent.toggleInfoWindow"></button>
         </div>
       </div>
       <div class="col-md-9"><div id="map-canvas"></div></div>
