@@ -33,8 +33,3 @@ var GOOGLEMAPS = (function() {
     createMarker: createMarker
   };
 })();
-
-
-
-
-

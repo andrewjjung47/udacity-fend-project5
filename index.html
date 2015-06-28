@@ -17,24 +17,26 @@
 
 </head>
 <body>
-  <h1>Project 5 running!</h1>
-  <div>
-      Data Binding:
-      <span class="status" data-bind="text: status">Inactive</span>
-  </div>
-
-  <!-- Google Maps -->
   <div class="container-fluid">
     <div class="row">
+      <div class="col-md-5">
+        <h1>Places to Visit in California</h1>
+        <span>Brought to you by Andrew Jung</span>
+      </div>
+      <div class="col-md-7"></div>
+    </div>
+    <div class="row main">
+      <!-- Places list -->
       <div class="col-md-3">
         <input type="text" class="form-control" placeholder="Filter by...">
         <ul class="list-group" data-bind="foreach: listOfPlaces">
           <li>
             <button class="list-group-item" data-bind="text: title, click: $parent.toggleInfoWindow"></button>
-            <span class="glyphicon glyphicon-remove"></span>
+            <span class="glyphicon glyphicon-remove" data-bind="click: $parent.removePlace"></span>
           </li>
         </div>
       </ul>
+      <!-- Google Maps -->
       <div class="col-md-9"><div id="map-canvas"></div></div>
     </div>
   </div>
