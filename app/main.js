@@ -28,10 +28,22 @@ define(["jquery", "knockout"], function($, ko) {
                       new google.maps.LatLng(34.138117,-118.353378));
         self.addPlace("Disneyland Park",
                       new google.maps.LatLng(33.812092,-117.918974));
+        self.addPlace("Hollywood Walk of Fame",
+                      new google.maps.LatLng(34.0937508,-118.3264781));
+        self.addPlace("Griffith Observatory",
+                      new google.maps.LatLng(34.1184341,-118.3003935));
 
         self.toggleInfoWindow = function() {
             google.maps.event.trigger(this, 'click');
         };
+
+        var filterSearch = function(target, keyword) {
+            return target.search(new RegExp(keyword, 'i'));
+        };
+
+        self.filteredPlaces = ko.computed(function() {
+
+        });
     }
     ko.applyBindings(new viewModel(), $('html')[0]);
 });

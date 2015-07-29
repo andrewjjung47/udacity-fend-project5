@@ -5,7 +5,7 @@ var GOOGLEMAPS = (function() {
   function initialize() {
     var mapOptions = {
       center: { lat: 34.0204989, lng: -118.4117325}, // Los Angeles as initial position
-      zoom: 8
+      zoom: 10
     };
 
     map = new google.maps.Map(document.getElementById('map-canvas'),
