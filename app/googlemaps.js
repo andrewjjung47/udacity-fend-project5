@@ -1,4 +1,4 @@
-var GOOGLEMAPS = (function() {
+define(['require'], function(require) {
   var map, markers;
   var infowindow = new google.maps.InfoWindow();
 
@@ -32,4 +32,4 @@ var GOOGLEMAPS = (function() {
   return {
     createMarker: createMarker
   };
-})();
+});

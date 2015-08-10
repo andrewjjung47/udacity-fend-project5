@@ -3,14 +3,9 @@ require.config({
   // expose jquery
   paths: {
     "bower_components": "../bower_components",
-    "jquery": "../bower_components/jquery/dist/jquery"
+    "jquery": "../bower_components/jquery/dist/jquery",
+    "knockout": "../bower_components/knockout.js/knockout",
   },
-  map: {
-    "*": {
-      "knockout": "../bower_components/knockout.js/knockout",
-      "ko": "../bower_components/knockout.js/knockout"
-    }
-  }
 });
 
 // Use the debug version of knockout it development only
@@ -26,6 +21,6 @@ require.config({
 });
 
 if (!window.requireTestMode) {
-  require(['main'], function(){ });
+  require(['jquery', 'knockout', 'main'], function(){ });
 }
 
