@@ -2,6 +2,8 @@ define(['require'], function(require) {
   var map, markers;
   var infowindow = new google.maps.InfoWindow();
 
+  var mapReadyEvent = new Event('mapReady');
+
   function initialize() {
     var mapOptions = {
       center: { lat: 34.0204989, lng: -118.4117325}, // Los Angeles as initial position
@@ -10,6 +12,11 @@ define(['require'], function(require) {
 
     map = new google.maps.Map(document.getElementById('map-canvas'),
         mapOptions);
+
+    var cancelled = !window.dispatchEvent(mapReadyEvent);
+    if (cancelled) {
+      console.error("Event 'mapReady' was cancelled.");
+    }
   }
   google.maps.event.addDomListener(window, 'load', initialize);
 
