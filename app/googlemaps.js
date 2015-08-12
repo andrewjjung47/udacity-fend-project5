@@ -1,4 +1,6 @@
-define(['require'], function(require) {
+define(['require', 'jquery'], function(require) {
+  var $ = require('jquery');
+
   var map, markers;
   var infowindow = new google.maps.InfoWindow();
 
@@ -18,7 +20,38 @@ define(['require'], function(require) {
       console.error("Event 'mapReady' was cancelled.");
     }
   }
-  google.maps.event.addDomListener(window, 'load', initialize);
+
+  var contentTemplate = '<h4>{title}</h4>' +
+    '<button class="link open-streetview">Open streets view</button>';
+  var contentBuilder = function(title) {
+    return contentTemplate.replace('{title}', title);
+  };
+
+  function setStreetView(position) {
+    var streetViewDiv = $('#street-view');
+    if (streetViewDiv.length !== 0) {
+      var panorama = new google.maps.StreetViewPanorama(
+                                                         streetViewDiv[0],
+                                                         {
+                                                            position: position,
+                                                            zoom: 1
+                                                         });
+    }
+    else {
+      console.error('Element #streets-view does not exist.');
+    }
+  }
+
+  function openStreetView(position) {
+    var modalStreetView = $('#modal-streetview');
+    if (modalStreetView.length !== 0) {
+      setStreetView(position);
+      modalStreetView.modal();
+    }
+    else {
+      console.error('Cannot obtain the streets view modal.');
+    }
+  }
 
   function createMarker(title, position) {
     var marker = new google.maps.Marker({
@@ -26,9 +59,14 @@ define(['require'], function(require) {
       title: title
     });
 
-    google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(this.title);
-        infowindow.open(map, this);
+    marker.addListener('click', function() {
+        var content = contentBuilder(marker.title);
+        infowindow.setContent(content);
+        infowindow.open(map, marker);
+
+        $('button.open-streetview').click(function() {
+          openStreetView(position);
+        });
     });
 
     marker.setMap(map);
@@ -36,7 +74,14 @@ define(['require'], function(require) {
     return marker;
   }
 
+  function Place(name, position) {
+    // TODO: automatically search position
+    return createMarker(name, position);
+  }
+
+  google.maps.event.addDomListener(window, 'load', initialize);
+
   return {
-    createMarker: createMarker
+    Place: Place
   };
 });

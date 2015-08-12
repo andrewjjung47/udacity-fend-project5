@@ -1,17 +1,12 @@
 // to depend on a bower installed component:
 // define(['component/componentName/file'])
 
-define(['require', 'jquery', 'knockout', 'googlemaps'], function (require) {
+define(['require', 'jquery', 'bootstrap', 'knockout', 'googlemaps'], function (require) {
   var $ = require("jquery");
   var ko = require("knockout");
 
   var googlemaps = require("googlemaps");
   window.googlemaps = googlemaps;
-
-  function Place(name, position) {
-      // TODO: automatically search position
-      return googlemaps.createMarker(name, position);
-  }
 
   function viewModel() {
       var self = this;
@@ -21,7 +16,7 @@ define(['require', 'jquery', 'knockout', 'googlemaps'], function (require) {
       self.listOfPlaces = ko.observableArray();
 
       self.addPlace = function(name, position) {
-          var place = new Place(name, position);
+          var place = new googlemaps.Place(name, position);
           self.listOfPlaces.push(place);
       };
 

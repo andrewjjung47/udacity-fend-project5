@@ -24,6 +24,7 @@
       </div>
       <div class="col-md-7"></div>
     </div>
+
     <div class="row main">
       <!-- Places list -->
       <div class="col-md-3">
@@ -33,10 +34,20 @@
             <button class="list-group-item" data-bind="text: title, click: $parent.toggleInfoWindow"></button>
             <span class="glyphicon glyphicon-remove" data-bind="click: $parent.removePlace"></span>
           </li>
-        </div>
-      </ul>
+        </ul>
+      </div>
       <!-- Google Maps -->
       <div class="col-md-9"><div id="map-canvas"></div></div>
+    </div>
+  </div>
+
+  <!-- Streets view modal -->
+  <div id="modal-streetview" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-body" id="street-view">
+        </div>
+      </div>
     </div>
   </div>
 </body>
