@@ -27,35 +27,10 @@ define(['require', 'jquery', 'bootstrap', 'knockout', 'googlemaps'], function (r
           google.maps.event.trigger(this, 'click');
       };
 
-      var filterByName = function(target, keyword) {
-        console.log(target);
-        console.assert(typeof target === 'string', "Parameter 'target' is not a string.");
-        return target.search(new RegExp(keyword, 'i')) === -1 ? false: true;
-      };
-
-      var arrayFilterByName = function(array, keyword) {
-        if (keyword === '') {
-          return array;
-        }
-        var filteredArray = [];
-
-        array.forEach(function(element) {
-          var filter = filterByName(element.title, keyword);
-          console.log(filter);
-          if (filter) {
-            filteredArray.push(element);
-          }
-        });
-
-        console.log(filteredArray);
-        return filteredArray;
-      };
-
       self.filter = ko.observable('');
 
       self.filteredPlaces = ko.computed(function() {
-        console.log(self.listOfPlaces());
-        return arrayFilterByName(self.listOfPlaces(), self.filter());
+        return googlemaps.arrayFilterByName(self.listOfPlaces(), self.filter());
       });
 
       self.addPlace("Universal Studios Hollywood",

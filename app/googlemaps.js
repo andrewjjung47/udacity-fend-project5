@@ -79,9 +79,32 @@ define(['require', 'jquery'], function(require) {
     return createMarker(name, position);
   }
 
+  var filterByName = function(target, keyword) {
+    console.assert(typeof target === 'string', "Parameter 'target' is not a string.");
+    return (keyword !== '') && (target.search(new RegExp(keyword, 'i')) === -1) ? false: true;
+  };
+
+  var arrayFilterByName = function(array, keyword) {
+    var filteredArray = [];
+
+    array.forEach(function(element) {
+      var filter = filterByName(element.title, keyword);
+      if (filter) {
+        filteredArray.push(element);
+        element.setMap(map);
+      }
+      else {
+        element.setMap(null);
+      }
+    });
+
+    return filteredArray;
+  };
+
   google.maps.event.addDomListener(window, 'load', initialize);
 
   return {
-    Place: Place
+    Place: Place,
+    arrayFilterByName: arrayFilterByName
   };
 });
