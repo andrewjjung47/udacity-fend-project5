@@ -28,8 +28,8 @@
     <div class="row main">
       <!-- Places list -->
       <div class="col-md-3">
-        <input type="text" class="form-control" placeholder="Filter by...">
-        <ul class="list-group" data-bind="foreach: listOfPlaces">
+        <input type="text" class="form-control" data-bind="value: filter" placeholder="Filter by...">
+        <ul class="list-group" data-bind="foreach: filteredPlaces()">
           <li>
             <button class="list-group-item" data-bind="text: title, click: $parent.toggleInfoWindow"></button>
             <span class="glyphicon glyphicon-remove" data-bind="click: $parent.removePlace"></span>
