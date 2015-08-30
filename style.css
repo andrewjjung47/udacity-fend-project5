@@ -13,13 +13,8 @@ body {
   height: 100%;
 }
 
-.col-md-3 {
-  padding-right: 0;
-}
-
 .col-md-9 {
   height: 100%;
-  padding-left: 0;
 }
 
 #map-canvas {
