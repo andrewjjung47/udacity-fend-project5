@@ -5,7 +5,7 @@ require.config({
     "bower_components": "../bower_components",
     "jquery": "../bower_components/jquery/dist/jquery",
     "knockout": "../bower_components/knockout.js/knockout",
-    "bootstrap": "../bower_components/bootstrap/dist/js/bootstrap.min"
+    "bootstrap": "../bower_components/bootstrap/dist/js/bootstrap.min",
   },
 });
 

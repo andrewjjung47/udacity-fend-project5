@@ -1,10 +1,9 @@
 // to depend on a bower installed component:
 // define(['component/componentName/file'])
 
-define(['require', 'jquery', 'bootstrap', 'knockout', 'googlemaps'], function (require) {
+define(['require', 'jquery', 'knockout', 'googlemaps', 'yelp'], function (require) {
   var $ = require("jquery");
   var ko = require("knockout");
-
   var googlemaps = require("googlemaps");
   window.googlemaps = googlemaps;
 

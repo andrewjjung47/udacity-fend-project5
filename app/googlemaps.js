@@ -1,5 +1,8 @@
-define(['require', 'jquery'], function(require) {
+//TODO: change styling of marker when clicked.
+
+define(['require', 'jquery', 'bootstrap', 'yelp'], function(require) {
   var $ = require('jquery');
+  var yelp = require('yelp');
 
   var map, markers;
   var infowindow = new google.maps.InfoWindow();
@@ -22,7 +25,8 @@ define(['require', 'jquery'], function(require) {
   }
 
   var contentTemplate = '<h4>{title}</h4>' +
-    '<button class="link open-streetview">Open streets view</button>';
+    '<button class="link open-streetview">Open streets view</button>' + '<br>' +
+    '<button class="link search-restaurants">Search restaurants nearby</button>';
   var contentBuilder = function(title) {
     return contentTemplate.replace('{title}', title);
   };
@@ -53,11 +57,23 @@ define(['require', 'jquery'], function(require) {
     }
   }
 
+  var clickedMarker;
+
   function createMarker(title, position) {
     var marker = new google.maps.Marker({
       position: position,
       title: title
     });
+    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png')
+
+    function markerChangeColor() {
+      if (clickedMarker !== undefined) {
+        clickedMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+      }
+
+      marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+      clickedMarker = marker;
+    }
 
     marker.addListener('click', function() {
         var content = contentBuilder(marker.title);
@@ -67,6 +83,11 @@ define(['require', 'jquery'], function(require) {
         $('button.open-streetview').click(function() {
           openStreetView(position);
         });
+        $('button.search-restaurants').click(function() {
+          yelp.searchRestaurants(position);
+        });
+
+        markerChangeColor();
     });
 
     marker.setMap(map);
