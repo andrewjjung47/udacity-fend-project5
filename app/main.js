@@ -1,7 +1,7 @@
 // to depend on a bower installed component:
 // define(['component/componentName/file'])
 
-define(['require', 'jquery', 'knockout', 'googlemaps', 'yelp'], function (require) {
+define(['require', 'jquery', 'knockout', 'googlemaps'], function (require) {
   var $ = require("jquery");
   var ko = require("knockout");
   var googlemaps = require("googlemaps");
@@ -32,8 +32,8 @@ define(['require', 'jquery', 'knockout', 'googlemaps', 'yelp'], function (requir
         return googlemaps.arrayFilterByName(self.listOfPlaces(), self.filter());
       });
 
-      self.addPlace("Universal Studios Hollywood",
-                    new google.maps.LatLng(34.138117,-118.353378));
+      self.addPlace("Venice Beach",
+                    new google.maps.LatLng(33.9875155,-118.4617151));
       self.addPlace("Disneyland Park",
                     new google.maps.LatLng(33.812092,-117.918974));
       self.addPlace("Hollywood Walk of Fame",

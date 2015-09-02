@@ -1,8 +1,7 @@
 //TODO: change styling of marker when clicked.
 
-define(['require', 'jquery', 'bootstrap', 'yelp'], function(require) {
+define(['require', 'jquery', 'bootstrap'], function(require) {
   var $ = require('jquery');
-  var yelp = require('yelp');
 
   var map, markers;
   var infowindow = new google.maps.InfoWindow();
@@ -23,13 +22,6 @@ define(['require', 'jquery', 'bootstrap', 'yelp'], function(require) {
       console.error("Event 'mapReady' was cancelled.");
     }
   }
-
-  var contentTemplate = '<h4>{title}</h4>' +
-    '<button class="link open-streetview">Open streets view</button>' + '<br>' +
-    '<button class="link search-restaurants">Search restaurants nearby</button>';
-  var contentBuilder = function(title) {
-    return contentTemplate.replace('{title}', title);
-  };
 
   function setStreetView(position) {
     var streetViewDiv = $('#street-view');
@@ -57,7 +49,16 @@ define(['require', 'jquery', 'bootstrap', 'yelp'], function(require) {
     }
   }
 
-  var clickedMarker;
+  var contentTemplate = '<h4>{title}</h4>' +
+    '<button class="link open-streetview">Open streets view</button>' + '<br>' +
+    '<button class="link search-restaurants">Search restaurants nearby</button>';
+
+  // Build infowindow content from contentTemplate
+  var contentBuilder = function(title) {
+    return contentTemplate.replace('{title}', title);
+  };
+
+  var clickedMarker; // tracks the mark with infowindow opened
 
   function createMarker(title, position) {
     var marker = new google.maps.Marker({
@@ -83,9 +84,6 @@ define(['require', 'jquery', 'bootstrap', 'yelp'], function(require) {
         $('button.open-streetview').click(function() {
           openStreetView(position);
         });
-        $('button.search-restaurants').click(function() {
-          yelp.searchRestaurants(position);
-        });
 
         markerChangeColor();
     });
@@ -96,7 +94,6 @@ define(['require', 'jquery', 'bootstrap', 'yelp'], function(require) {
   }
 
   function Place(name, position) {
-    // TODO: automatically search position
     return createMarker(name, position);
   }
 
