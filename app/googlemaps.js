@@ -1,21 +1,32 @@
 //TODO: change styling of marker when clicked.
 
-define(['require', 'jquery', 'bootstrap'], function(require) {
+define(['require', 'jquery', 'bootstrap', 'yelp'], function(require) {
   var $ = require('jquery');
 
-  var map, markers;
+  var map, panorama;
   var infowindow = new google.maps.InfoWindow();
 
   var mapReadyEvent = new Event('mapReady');
 
   function initialize() {
+    var center = { lat: 34.0204989, lng: -118.4117325}; // Los Angeles as initial position
+
     var mapOptions = {
-      center: { lat: 34.0204989, lng: -118.4117325}, // Los Angeles as initial position
+      center: center,
       zoom: 10
     };
 
     map = new google.maps.Map(document.getElementById('map-canvas'),
         mapOptions);
+
+    var streetViewDiv = $('#street-view');
+    if (streetViewDiv.length !== 0) {
+      panorama = new google.maps.StreetViewPanorama(
+                                                         streetViewDiv[0]);
+    }
+    else {
+      console.error('Element #street-view does not exist.');
+    }
 
     var cancelled = !window.dispatchEvent(mapReadyEvent);
     if (cancelled) {
@@ -24,18 +35,12 @@ define(['require', 'jquery', 'bootstrap'], function(require) {
   }
 
   function setStreetView(position) {
+    // panorama.setPosition(position);
     var streetViewDiv = $('#street-view');
-    if (streetViewDiv.length !== 0) {
-      var panorama = new google.maps.StreetViewPanorama(
-                                                         streetViewDiv[0],
-                                                         {
-                                                            position: position,
-                                                            zoom: 1
-                                                         });
-    }
-    else {
-      console.error('Element #streets-view does not exist.');
-    }
+    panorama = new google.maps.StreetViewPanorama(
+                                                       streetViewDiv[0], {
+                                                        position: position
+                                                       });
   }
 
   function openStreetView(position) {
@@ -83,6 +88,9 @@ define(['require', 'jquery', 'bootstrap'], function(require) {
 
         $('button.open-streetview').click(function() {
           openStreetView(position);
+        });
+        $('button.search-restaurants').click(function() {
+          console.log("Not implemented yet.");
         });
 
         markerChangeColor();

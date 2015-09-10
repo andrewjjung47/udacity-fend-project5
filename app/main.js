@@ -40,6 +40,8 @@ define(['require', 'jquery', 'knockout', 'googlemaps'], function (require) {
                     new google.maps.LatLng(34.0937508,-118.3264781));
       self.addPlace("Griffith Observatory",
                     new google.maps.LatLng(34.1184341,-118.3003935));
+      self.addPlace("Long Beach",
+                    new google.maps.LatLng(33.7611582,-118.1970249));
   }
 
   window.addEventListener('mapReady', function() {

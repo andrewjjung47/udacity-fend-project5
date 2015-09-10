@@ -1,60 +1,82 @@
 define(['require', 'jquery'], function() {
   var $ = require('jquery');
 
-  var oauth = OAuth({
-      consumer: {
-          public: 'UXE8YtH8w-QpMfiuFgE3vg',
-          secret: '2vgE0fCMD-rgRtfv3mjyeYkygvU'
-      },
-      signature_method: 'HMAC-SHA1'
-  });
+  var auth = {
+    consumerKey: 'UXE8YtH8w-QpMfiuFgE3vg',
+    consumerSecret: '2vgE0fCMD-rgRtfv3mjyeYkygvU',
+    accessToken: 'GQpJ7ta9-8pID38FnZHDjNE0nNp23T1y',
+    accessTokenSecret: 'Omo46E71JHRxGfirGkiJhhK_uQ4',
+    serviceProvider: {
+      signatureMethod: "HMAC-SHA1"
+    }
+  };
 
-  var token = {
-      public: 'pINulqxz9N9xBVIQAVED95r-TJG83piE',
-      secret: 'QtwPNDurMjpApL-gVQ60LXanPQA'
+  var accessor = {
+    consumerSecret: auth.consumerSecret,
+    tokenSecret: auth.accessTokenSecret
   };
 
   var baseUrl = 'http://api.yelp.com/v2/search';
 
-  var searchData = function(position) {
+  var terms = 'restaurants';
+
+  var location = 'Los Angeles';
+
+  var baseParameters = [];
+  baseParameters.push(['term', terms]);
+  baseParameters.push(['callback', 'cb']);
+  baseParameters.push(['oauth_consumer_key', auth.consumerKey]);
+  baseParameters.push(['oauth_consumer_secret', auth.consumerSecret]);
+  baseParameters.push(['oauth_token', auth.accessToken]);
+  baseParameters.push(['oauth_signature_method', 'HMAC-SHA1']);
+  baseParameters.push(['location', location]);
+
+  var searchParameters = function(position) {
     var lat = position.lat();
     var lng = position.lng();
-    return {
-      term: 'restaurants',
-      cll: lat + ',' + lng,
-      location: 'Los Angeles'
-    };
+
+    var cll = lat + ',' + lng;
+
+    var parameters = baseParameters.slice(0);
+    parameters.push(['cll', cll]);
+
+    return parameters;
   };
 
   var requestData = function(position) {
-    var data = searchData(position);
-    return {
-      url: baseUrl,
-      method: 'POST',
-      data: data
+    var parameters = searchParameters(position);
+
+    var message = {
+      'action': baseUrl,
+      'method': 'GET',
+      'parameters': parameters
     };
+
+    return message;
   };
 
   var searchRestaurants = function(position) {
-    var cb = function(data) {
-      console.log(data);
-    };
+    var message = requestData(position);
 
-    var request = requestData(position);
-    request.data['callback'] = 'cb';
-    console.log(request);
-    var oauthParam = oauth.authorize(request, token);
-
-    console.log(oauthParam);
-
+    OAuth.setTimestampAndNonce(message);
+    OAuth.SignatureMethod.sign(message, accessor);
+    var parameterMap = OAuth.getParameterMap(message.parameters);
+    parameterMap.oauth_signature = OAuth.percentEncode(parameterMap.oauth_signature);
+    console.log(parameterMap);
 
     $.ajax({
-      url: request.url,
-      type: request.method,
-      data: oauthParam,
-      dataType: 'jsonp'
+      'url': message.action,
+      'data': parameterMap,
+      'cache': true,
+      'dataType': 'jsonp',
+      'jsonpCallback': 'cb',
+      'success': function(data, textStats, XMLHttpRequest) {
+        console.log(data);
+      }
     });
   };
+
+  window.searchRestaurants = searchRestaurants;
 
   return {
     searchRestaurants: searchRestaurants
