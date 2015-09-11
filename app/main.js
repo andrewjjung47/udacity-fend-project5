@@ -42,9 +42,26 @@ define(['require', 'jquery', 'knockout', 'googlemaps'], function (require) {
                     new google.maps.LatLng(34.1184341,-118.3003935));
       self.addPlace("Long Beach",
                     new google.maps.LatLng(33.7611582,-118.1970249));
+
+      self.restaurants = ko.observableArray();
+  }
+
+  function yelpModel() {
+    var self = this;
+
+    self.restaurants = ko.observableArray();
+
+    self.newRestaurants = function(restaurants) {
+      self.restaurants.removeAll();
+
+      restaurants.forEach(function(restaurant) {
+        self.restaurants.push(restaurant);
+      });
+    };
   }
 
   window.addEventListener('mapReady', function() {
     ko.applyBindings(new viewModel(), $('html')[0]);
+    ko.applyBindings(new yelpModel(), $('#modal-yelp')[0]);
   });
 });

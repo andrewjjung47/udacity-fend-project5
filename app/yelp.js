@@ -1,4 +1,4 @@
-define(['require', 'jquery'], function() {
+define(['require', 'jquery', 'main'], function() {
   var $ = require('jquery');
 
   var auth = {
@@ -55,14 +55,32 @@ define(['require', 'jquery'], function() {
     return message;
   };
 
-  var searchRestaurants = function(position) {
+  var processReturnData = function(data) {
+    var restaurants = [];
+
+    data.businesses.forEach(function(restaurantData) {
+      restaurants.push({
+        name: restaurantData['name'],
+        url: restaurantData['url'],
+        image: restaurantData['image_url'],
+        rating_img: restaurantData['rating_img_url'],
+        categories: restaurantData['categories'].map(function(category) {
+          return category[0]
+        })
+      });
+    });
+
+    console.log(restaurants);
+    return restaurants;
+  };
+
+  var searchRestaurants = function(position, callBack) {
     var message = requestData(position);
 
     OAuth.setTimestampAndNonce(message);
     OAuth.SignatureMethod.sign(message, accessor);
     var parameterMap = OAuth.getParameterMap(message.parameters);
     parameterMap.oauth_signature = OAuth.percentEncode(parameterMap.oauth_signature);
-    console.log(parameterMap);
 
     $.ajax({
       'url': message.action,
@@ -72,6 +90,7 @@ define(['require', 'jquery'], function() {
       'jsonpCallback': 'cb',
       'success': function(data, textStats, XMLHttpRequest) {
         console.log(data);
+        processReturnData(data);
       }
     });
   };

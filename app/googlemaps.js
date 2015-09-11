@@ -1,7 +1,8 @@
 //TODO: change styling of marker when clicked.
 
 define(['require', 'jquery', 'bootstrap', 'yelp'], function(require) {
-  var $ = require('jquery');
+  var $ = require('jquery'),
+    yelp = require('yelp');
 
   var map, panorama;
   var infowindow = new google.maps.InfoWindow();
@@ -90,7 +91,9 @@ define(['require', 'jquery', 'bootstrap', 'yelp'], function(require) {
           openStreetView(position);
         });
         $('button.search-restaurants').click(function() {
-          console.log("Not implemented yet.");
+          yelp.searchRestaurants(position, function(data) {
+            console.log(data);
+          });
         });
 
         markerChangeColor();
