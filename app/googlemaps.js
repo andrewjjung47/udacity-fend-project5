@@ -46,8 +46,10 @@ define(['require', 'jquery', 'bootstrap', 'yelp'], function(require) {
 
   function openStreetView(position) {
     var modalStreetView = $('#modal-streetview');
-    if (modalStreetView.length !== 0) {
+    modalStreetView.on('shown.bs.modal', function() {
       setStreetView(position);
+    });
+    if (modalStreetView.length !== 0) {
       modalStreetView.modal();
     }
     else {
