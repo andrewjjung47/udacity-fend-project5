@@ -91,9 +91,8 @@ define(['require', 'jquery', 'bootstrap', 'yelp'], function(require) {
           openStreetView(position);
         });
         $('button.search-restaurants').click(function() {
-          yelp.searchRestaurants(position, function(data) {
-            console.log(data);
-          });
+          yelp.searchRestaurants(position);
+          $('#modal-yelp').modal();
         });
 
         markerChangeColor();

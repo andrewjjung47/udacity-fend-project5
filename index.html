@@ -19,7 +19,7 @@
 
 </head>
 <body>
-  <div class="container-fluid">
+  <div class="container-fluid" id="main-view">
     <div class="row">
       <div class="col-md-5">
         <h1>Places to Visit in California</h1>
@@ -58,7 +58,22 @@
   <div id="modal-yelp" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
-        <div class="modal-body" id="yelp-list">
+        <div class="modal-body container-fluid" id="yelp-list">
+          <ul class="list-group" data-bind="foreach: restaurants()">
+            <li>
+              <div class="row">
+                <div class="col-md-3">
+                  <img class="restaurant-img" data-bind="attr:{src: image}" alt="restaurant image">
+                </div>
+                <div class="col-md-9">
+                  <a data-bind="attr: {href: url}"><h4 data-bind="text: name"></h4></a>
+                  <span data-bind="text: $root.CommaSeparateCategories(categories)"></span>
+                  <br>
+                  <span><img data-bind="attr: {src: rating_img}" alt="rating image"></span>
+                </div>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

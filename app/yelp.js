@@ -1,5 +1,6 @@
-define(['require', 'jquery', 'main'], function() {
-  var $ = require('jquery');
+define(['require', 'jquery', 'knockout'], function() {
+  var $ = require('jquery'),
+    ko = require('knockout');
 
   var auth = {
     consumerKey: 'UXE8YtH8w-QpMfiuFgE3vg',
@@ -70,11 +71,10 @@ define(['require', 'jquery', 'main'], function() {
       });
     });
 
-    console.log(restaurants);
     return restaurants;
   };
 
-  var searchRestaurants = function(position, callBack) {
+  var searchRestaurants = function(position) {
     var message = requestData(position);
 
     OAuth.setTimestampAndNonce(message);
@@ -89,13 +89,38 @@ define(['require', 'jquery', 'main'], function() {
       'dataType': 'jsonp',
       'jsonpCallback': 'cb',
       'success': function(data, textStats, XMLHttpRequest) {
-        console.log(data);
-        processReturnData(data);
+        var restaurants = processReturnData(data);
+        yelpModelObject.newRestaurants(restaurants.slice(0, 5));
       }
     });
   };
 
-  window.searchRestaurants = searchRestaurants;
+  function yelpModel() {
+    var self = this;
+
+    self.restaurants = ko.observableArray();
+
+    self.newRestaurants = function(restaurants) {
+      self.restaurants.removeAll();
+
+      restaurants.forEach(function(restaurant) {
+        self.restaurants.push(restaurant);
+      });
+
+      console.log(self.restaurants.slice(0));
+    };
+
+    self.CommaSeparateCategories = function(categories) {
+      return categories.join(', ');
+    };
+  }
+
+  var yelpModelObject;
+
+  window.addEventListener('mapReady', function() {
+    yelpModelObject = new yelpModel();
+    ko.applyBindings(yelpModelObject, $('#modal-yelp')[0]);
+  });
 
   return {
     searchRestaurants: searchRestaurants
